@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@aws/codewhisperer-streaming-client": "^1.0.34",
-    "@modelcontextprotocol/sdk": "^1.12.1",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@mozilla/readability": "^0.6.0",
     "axios": "^1.14.0",
     "axios-retry": "^4.5.0",

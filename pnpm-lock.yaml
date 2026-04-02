@@ -12,7 +12,7 @@ importers:
         specifier: ^1.0.34
         version: 1.0.34
       '@modelcontextprotocol/sdk':
-        specifier: ^1.12.1
+        specifier: ^1.29.0
         version: 1.29.0(zod@4.3.6)
       '@mozilla/readability':
         specifier: ^0.6.0
