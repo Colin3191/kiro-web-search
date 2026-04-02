@@ -23,7 +23,7 @@ Add to `~/.claude.json` (global) or `.claude/settings.json` (project-level):
   "mcpServers": {
     "kiro-web-search": {
       "command": "npx",
-      "args": ["@colin3191/kiro-web-search"]
+      "args": ["-y", "@colin3191/kiro-web-search"]
     }
   }
 }

@@ -23,7 +23,7 @@ npx @colin3191/kiro-web-search
   "mcpServers": {
     "kiro-web-search": {
       "command": "npx",
-      "args": ["@colin3191/kiro-web-search"]
+      "args": ["-y", "@colin3191/kiro-web-search"]
     }
   }
 }
