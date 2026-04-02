@@ -33,19 +33,9 @@ Returns titles, URLs, snippets, and publication dates.
 |-----------|------|----------|-------------|
 | `query` | string | Yes | Search query, max 200 characters |
 
-### web_fetch — Fetch web page content
-
-Fetches a URL and extracts readable content using Readability.
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `url` | string | Yes | HTTPS URL to fetch |
-| `mode` | string | No | `"truncated"` (default, first 8KB), `"full"`, or `"selective"` |
-| `searchPhrase` | string | No | Required when mode is `"selective"` |
-
 ## How It Works
 
-Reads Kiro's auth token, calls Amazon Q Developer's `InvokeMCP` API to execute `web_search`, and returns formatted results over MCP stdio transport. `web_fetch` fetches pages locally via HTTP and extracts content using Readability.
+Reads Kiro's auth token, calls Amazon Q Developer's `InvokeMCP` API to execute `web_search`, and returns formatted results over MCP stdio transport.
 
 Token refresh (Social and IdC) is handled automatically.
 
