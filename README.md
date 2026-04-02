@@ -10,12 +10,6 @@
 
 ## 快速开始
 
-```bash
-npx @colin3191/kiro-web-search
-```
-
-## 与 Claude Code 集成
-
 在 `~/.claude.json`（全局）或 `.claude/settings.json`（项目级）中添加：
 
 ```json

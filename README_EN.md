@@ -10,12 +10,6 @@ Install and log in to Kiro so that `~/.aws/sso/cache/kiro-auth-token.json` exist
 
 ## Quick Start
 
-```bash
-npx @colin3191/kiro-web-search
-```
-
-## Claude Code Integration
-
 Add to `~/.claude.json` (global) or `.claude/settings.json` (project-level):
 
 ```json
