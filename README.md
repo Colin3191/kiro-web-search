@@ -17,7 +17,7 @@
   "mcpServers": {
     "kiro-web-search": {
       "command": "npx",
-      "args": ["-y", "@colin3191/kiro-web-search"]
+      "args": ["-y", "kiro-web-search"]
     }
   }
 }
@@ -32,6 +32,16 @@
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | `query` | string | 是 | 搜索关键词，最多 200 字符 |
+
+### web_fetch — 抓取网页内容
+
+获取指定 URL 的页面内容，使用 Readability 提取正文。
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `url` | string | 是 | 完整 HTTPS URL（不含查询参数） |
+| `mode` | string | 否 | `truncated`（默认，前 8KB）、`full`（最大 10MB）、`selective`（仅匹配段落） |
+| `searchPhrase` | string | 否 | selective 模式必填，仅返回包含该短语的段落 |
 
 ## 工作原理
 

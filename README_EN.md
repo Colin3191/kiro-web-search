@@ -17,7 +17,7 @@ Add to `~/.claude.json` (global) or `.claude/settings.json` (project-level):
   "mcpServers": {
     "kiro-web-search": {
       "command": "npx",
-      "args": ["-y", "@colin3191/kiro-web-search"]
+      "args": ["-y", "kiro-web-search"]
     }
   }
 }
@@ -32,6 +32,16 @@ Returns titles, URLs, snippets, and publication dates.
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `query` | string | Yes | Search query, max 200 characters |
+
+### web_fetch — Fetch web page content
+
+Fetch and extract readable content from a URL using Readability.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `url` | string | Yes | Complete HTTPS URL (no query parameters) |
+| `mode` | string | No | `truncated` (default, first 8KB), `full` (up to 10MB), `selective` (matching sections only) |
+| `searchPhrase` | string | No | Required for selective mode. Only sections containing this phrase are returned |
 
 ## How It Works
 
