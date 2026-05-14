@@ -17,12 +17,15 @@ npm install -g kiro-web-search
 
 安装 Skill（二选一）：
 
-> 方法 1：复制下面这句话发给你的 Agent，让它自己安装到对应目录
->
-> 请从 https://raw.githubusercontent.com/Colin3191/kiro-web-search/main/skills/kiro-web-search/SKILL.md 下载并保存到你的 skills 目录
+**方法 1：** 复制下面这句话发给你的 Agent，让它自己安装：
+
+```
+请从 https://raw.githubusercontent.com/Colin3191/kiro-web-search/main/skills/kiro-web-search/SKILL.md 下载并保存到你的 skills 目录
+```
+
+**方法 2：** 通过 npx skills 安装：
 
 ```bash
-# 方法 2：通过 npx skills 安装
 npx skills add colin3191/kiro-web-search
 ```
 

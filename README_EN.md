@@ -17,12 +17,15 @@ npm install -g kiro-web-search
 
 Install Skill (pick one):
 
-> Option 1: Copy the following message to your Agent and let it install to the correct directory
->
-> Please download https://raw.githubusercontent.com/Colin3191/kiro-web-search/main/skills/kiro-web-search/SKILL.md and save it to your skills directory
+**Option 1:** Copy the following message to your Agent and let it install:
+
+```
+Please download https://raw.githubusercontent.com/Colin3191/kiro-web-search/main/skills/kiro-web-search/SKILL.md and save it to your skills directory
+```
+
+**Option 2:** Via npx skills:
 
 ```bash
-# Option 2: via npx skills
 npx skills add colin3191/kiro-web-search
 ```
 
