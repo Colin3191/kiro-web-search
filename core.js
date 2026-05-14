@@ -1,0 +1,94 @@
+import { CodeWhispererStreaming, InvokeMCPCommand } from '@aws/codewhisperer-streaming-client';
+import crypto from 'crypto';
+import os from 'os';
+import { getAccessToken } from './token-reader.js';
+
+const KIRO_VERSION = process.env.KIRO_VERSION || '0.11.107';
+const REGION_ENDPOINTS = {
+  'us-east-1': 'https://q.us-east-1.amazonaws.com',
+  'eu-west-1': 'https://q.eu-west-1.amazonaws.com',
+  'ap-southeast-1': 'https://q.ap-southeast-1.amazonaws.com',
+  'ap-northeast-1': 'https://q.ap-northeast-1.amazonaws.com',
+  'eu-central-1': 'https://q.eu-central-1.amazonaws.com',
+};
+
+function regionFromArn(arn) {
+  if (!arn) return null;
+  const parts = arn.split(':');
+  return parts.length >= 4 ? parts[3] : null;
+}
+
+let cachedClient = null;
+let cachedToken = null;
+
+function getClient(accessToken, { profileArn, authMethod } = {}) {
+  if (cachedClient && cachedToken === accessToken) return cachedClient;
+
+  const region = regionFromArn(profileArn) || 'us-east-1';
+  const endpoint = REGION_ENDPOINTS[region] || `https://q.${region}.amazonaws.com`;
+
+  const client = new CodeWhispererStreaming({
+    region, endpoint,
+    token: { token: accessToken },
+    customUserAgent: `KiroIDE ${KIRO_VERSION} ${os.hostname()}`,
+  });
+
+  client.middlewareStack.add(
+    (next) => async (args) => {
+      args.request.headers = { ...args.request.headers, 'x-amzn-codewhisperer-optout': 'true' };
+      return next(args);
+    },
+    { step: 'build', name: 'optOutHeader' }
+  );
+  if (authMethod === 'external_idp') {
+    client.middlewareStack.add(
+      (next) => async (args) => {
+        args.request.headers = { ...args.request.headers, TokenType: 'EXTERNAL_IDP' };
+        return next(args);
+      },
+      { step: 'build', name: 'tokenTypeHeader' }
+    );
+  }
+
+  cachedClient = client;
+  cachedToken = accessToken;
+  return client;
+}
+
+export async function invokeRemoteMCP(method, params) {
+  const tokenData = await getAccessToken();
+  const client = getClient(tokenData.accessToken, tokenData);
+
+  const command = new InvokeMCPCommand({
+    jsonrpc: '2.0',
+    id: crypto.randomUUID(),
+    method,
+    profileArn: tokenData.profileArn,
+    params,
+  });
+
+  const response = await client.send(command);
+  if (response.error) {
+    throw new Error(`MCP ${method} failed (code ${response.error.code}): ${response.error.message}`);
+  }
+  return response.result;
+}
+
+export function formatSearchResults(result) {
+  if (!result?.content) return 'No results found.';
+  const textContent = result.content.find(c => c.type === 'text');
+  if (!textContent?.text) return 'No results found.';
+  try {
+    const parsed = JSON.parse(textContent.text);
+    if (!Array.isArray(parsed.results)) return textContent.text;
+    return parsed.results.map(r => {
+      const parts = [`## ${r.title || 'Untitled'}`];
+      if (r.url) parts.push(`URL: ${r.url}`);
+      if (r.snippet) parts.push(r.snippet);
+      if (r.publishedDate) parts.push(`Published: ${r.publishedDate}`);
+      return parts.join('\n');
+    }).join('\n\n---\n\n');
+  } catch {
+    return textContent.text;
+  }
+}

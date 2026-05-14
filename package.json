@@ -1,7 +1,7 @@
 {
   "name": "@colin3191/kiro-web-search",
-  "version": "0.2.2",
-  "description": "MCP server that exposes Kiro's web search capability for use in Claude Code and other MCP clients",
+  "version": "0.3.0",
+  "description": "CLI tool that exposes Kiro's web search capability for use in Claude Code and other AI coding assistants",
   "type": "module",
   "bin": {
     "kiro-web-search": "./index.js"
@@ -11,15 +11,18 @@
   },
   "files": [
     "index.js",
+    "cli.js",
+    "core.js",
     "token-reader.js",
-    "web-fetch.js"
+    "web-fetch.js",
+    "skills/"
   ],
   "keywords": [
-    "mcp",
+    "cli",
     "kiro",
     "web-search",
     "claude-code",
-    "model-context-protocol"
+    "skill"
   ],
   "repository": {
     "type": "git",
@@ -27,11 +30,9 @@
   },
   "dependencies": {
     "@aws/codewhisperer-streaming-client": "^1.0.34",
-    "@modelcontextprotocol/sdk": "^1.29.0",
     "@mozilla/readability": "^0.6.0",
     "axios": "^1.16.1",
     "axios-retry": "^4.5.0",
-    "jsdom": "^29.1.1",
-    "zod": "^4.3.6"
+    "jsdom": "^29.1.1"
   }
 }
