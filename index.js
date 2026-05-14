@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import os from 'os';
 import { z } from 'zod';
 import { getAccessToken } from './token-reader.js';
+import { webFetch } from './web-fetch.js';
 
 const KIRO_VERSION = process.env.KIRO_VERSION || '0.11.107';
 const REGION_ENDPOINTS = {
@@ -99,6 +100,8 @@ function formatSearchResults(result) {
 
 const WEB_SEARCH_DESCRIPTION = `Search the web for current information. Returns results including title, URL, snippet, and publishedDate. Query must be 200 characters or less.`;
 
+const WEB_FETCH_DESCRIPTION = `Fetch and extract readable content from a URL. Supports HTML (via Readability) and plain text. Only HTTPS URLs without query parameters are allowed.`;
+
 const server = new McpServer(
   { name: 'kiro-web-search', version: '0.1.0' },
   { capabilities: { tools: {} } },
@@ -118,6 +121,28 @@ server.registerTool(
       return { content: [{ type: 'text', text: formatSearchResults(result) }] };
     } catch (err) {
       return { content: [{ type: 'text', text: `web_search failed: ${err.message}` }], isError: true };
+    }
+  },
+);
+
+server.registerTool(
+  'web_fetch',
+  {
+    description: WEB_FETCH_DESCRIPTION,
+    inputSchema: {
+      url: z.string().describe('Complete HTTPS URL to fetch (no query parameters or fragments).'),
+      mode: z.enum(['full', 'truncated', 'selective']).default('truncated').optional()
+        .describe('Fetch mode: "truncated" (default, first 8KB), "full" (up to 10MB), "selective" (only matching sections).'),
+      searchPhrase: z.string().optional()
+        .describe('Required for selective mode. Only sections containing this phrase will be returned.'),
+    },
+  },
+  async ({ url, mode, searchPhrase }) => {
+    try {
+      const result = await webFetch({ url, mode, searchPhrase });
+      return { content: [{ type: 'text', text: result }] };
+    } catch (err) {
+      return { content: [{ type: 'text', text: `web_fetch failed: ${err.message}` }], isError: true };
     }
   },
 );
