@@ -36,11 +36,6 @@ npx skills add colin3191/kiro-web-search
 kiro-web-search search "今日A股行情"
 kiro-web-search search "React 19 features" --json
 
-# 抓取网页
-kiro-web-search fetch https://example.com
-kiro-web-search fetch https://example.com --mode full
-kiro-web-search fetch https://example.com --mode selective --phrase "关键内容"
-
 # 帮助
 kiro-web-search --help
 kiro-web-search --version
@@ -56,16 +51,6 @@ kiro-web-search --version
 |------|------|------|------|
 | `<query>` | string | 是 | 搜索关键词，最多 200 字符 |
 | `--json` | flag | 否 | 输出原始 JSON 格式 |
-
-### fetch — 抓取网页内容
-
-获取指定 URL 的页面内容，使用 Readability 提取正文。
-
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| `<url>` | string | 是 | 完整 HTTPS URL（不含查询参数） |
-| `--mode` | string | 否 | `truncated`（默认，前 8KB）、`full`（最大 10MB）、`selective`（仅匹配段落） |
-| `--phrase` | string | 否 | selective 模式必填，仅返回包含该短语的段落 |
 
 ## 工作原理
 

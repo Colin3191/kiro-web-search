@@ -14,7 +14,6 @@
     "cli.js",
     "core.js",
     "token-reader.js",
-    "web-fetch.js",
     "skills/"
   ],
   "keywords": [
@@ -29,10 +28,6 @@
     "url": "https://github.com/Colin3191/kiro-web-search.git"
   },
   "dependencies": {
-    "@aws/codewhisperer-streaming-client": "^1.0.34",
-    "@mozilla/readability": "^0.6.0",
-    "axios": "^1.16.1",
-    "axios-retry": "^4.5.0",
-    "jsdom": "^29.1.1"
+    "@aws/codewhisperer-streaming-client": "^1.0.34"
   }
 }

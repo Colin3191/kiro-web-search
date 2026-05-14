@@ -1,6 +1,5 @@
 import { MCPMethod } from '@aws/codewhisperer-streaming-client';
 import { invokeRemoteMCP, formatSearchResults } from './core.js';
-import { webFetch } from './web-fetch.js';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -10,16 +9,12 @@ const HELP = `kiro-web-search v${pkg.version}
 
 Usage:
   kiro-web-search search <query> [--json]
-  kiro-web-search fetch <url> [--mode truncated|full|selective] [--phrase "..."]
   kiro-web-search --help, -h           Show this help
   kiro-web-search --version, -v        Show version
 
 Examples:
   kiro-web-search search "今日A股行情"
   kiro-web-search search "React 19 features" --json
-  kiro-web-search fetch https://example.com
-  kiro-web-search fetch https://example.com --mode full
-  kiro-web-search fetch https://example.com --mode selective --phrase "关键内容"
 `;
 
 function parseArgs(args) {
@@ -66,26 +61,6 @@ async function handleSearch(args) {
   }
 }
 
-async function handleFetch(args) {
-  const parsed = parseArgs(args);
-  const url = parsed._[1];
-  if (!url) {
-    console.error('Error: URL is required\n\nUsage: kiro-web-search fetch <url> [--mode truncated|full|selective] [--phrase "..."]');
-    process.exit(1);
-  }
-
-  const mode = parsed.mode || 'truncated';
-  const searchPhrase = parsed.phrase;
-
-  if (mode === 'selective' && !searchPhrase) {
-    console.error('Error: --phrase is required when using selective mode');
-    process.exit(1);
-  }
-
-  const result = await webFetch({ url, mode, searchPhrase });
-  console.log(result);
-}
-
 export async function runCli(args) {
   const command = args[0];
 
@@ -96,8 +71,6 @@ export async function runCli(args) {
       console.log(pkg.version);
     } else if (command === 'search') {
       await handleSearch(args);
-    } else if (command === 'fetch') {
-      await handleFetch(args);
     } else {
       console.error(`Unknown command: ${command}\n`);
       console.log(HELP);
